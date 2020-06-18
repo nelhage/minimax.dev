@@ -1,3 +1,4 @@
-baseURL: http://example.org/
+baseURL: https://minimax.dev/
 languageCode: en-us
-title: My New Hugo Site
+title: Some ramblings on game-tree search
+theme: book
