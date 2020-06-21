@@ -1,9 +1,9 @@
 ---
-title: Welcome to minimax.dev
+title: Welcome
 type: docs
 ---
 
-# Welcome to minimax.dev
+# Welcome
 
 Hello!
 
