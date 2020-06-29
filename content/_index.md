@@ -17,5 +17,5 @@ introductory material and referenes to background and further
 information, as well as writeups of my projects.
 
 For now, the main thing here is a work-in-progress [writeup of my
-ongoing attempt to solve Ultimate Tic Tac Toe](/ultimate). You
+ongoing attempt to solve Ultimate Tic Tac Toe](/docs/ultimate). You
 probably want to start there.
