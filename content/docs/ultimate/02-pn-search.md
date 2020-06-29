@@ -4,6 +4,8 @@ slug: pn-search
 title: Proof Number search
 ---
 
+# Proof Number search
+
 My work on solving Ultimate Tic Tac Toe is based on the Proof Number Search (or "PN Search") family of search algorithms. This family of algorithms has been used to solve many games, including [Checkers][checkers] and [9x9 Hex][hex99], and in endgame solvers for many others, including Chess and Go.
 
 I will present the basic PN algorithm, as well as some of the variants and enhancements that have been developed, when they are relevant to my work.
