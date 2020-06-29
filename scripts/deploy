@@ -1,0 +1,19 @@
+#!/bin/bash
+set -eux
+cd "$(dirname "$0")/.."
+git push
+revision=$(git rev-parse HEAD)
+cd "$HOME/code/infra-config"
+git checkout master
+git pull
+if ! grep "MINIMAX_DEV_REVISION=$revision" .env; then
+    sed -i -e "/^MINIMAX_DEV_REVISION=/ cMINIMAX_DEV_REVISION=$revision" .env
+    git commit .env -m "Bump minimax.dev"
+fi
+git push
+ssh nelhage.com bash -eux <<'REMOTE'
+cd $HOME/code/infra-config/
+git pull
+bin/docker-compose build minimax.dev
+bin/docker-compose up -d minimax.dev
+REMOTE
