@@ -91,9 +91,11 @@ dpn(N) &= \min_{c\in \operatorname{succ}(N)}dpn(c)
 \end{aligned}
 {{< /katex >}}
 
-In the fully-expanded game tree, the only leaf nodes are terminal nodes, in which the game is over. For these nodes, we assign pn and dpn based on the result of the game: If the attacker has won, we have `pn=0` and `dpn=∞`; if the game is drawn or the defender has won, we have `pn=∞` and `dpn=0`.
+For terminal nodes, we set the proof numbers directly based on the game's outcome:
+- If the attacker has won we have `pn=0` and `dpn=∞`
+- If the defender has won or the game is drawn, we have `pn=∞` and `dpn=0`
 
-However, PN search iteratively constructs the game tree, and so we will also have leaf nodes for which the game is not over, but we have not examined their children. We will initialize their proof numbers based on an initialization rule; the simplest and most conservative estimate is `pn = dpn = 1`, but other rules can be used to inject game-specific heuristic knowledge into the search.
+For unexpanded noded, we have some flexibility in assigning proof numbers; in the general case, we must define an _initialization rule_ which determines how we initialize proof numbers. The most conservative rule is to set `pn = dpn = 1` -- recall that the (d)pn's are a lower bound on the number of nodes that must be proved, and `1` is necessarily a lower bound for a nonterminal node. The initialization rule, however, is one opportunity to inject game-specific heuristics into PN search. One common heuristic is to initialize `pn` and `dpn` based on the number of available moves from the position, in cases where that is sufficiently cheap to compute.
 
 ## The most-proving node
 
@@ -116,13 +118,6 @@ I will not present full pseudo-code (see [Kishimoto et al](first-20-years) for o
   - We expand the MPN by creating tree nodes, one for each legal move from the MPN
   - We evaluate those children, assigning proof numbers based on either game result, or an initialization heuristic
   - We backpropagate, updating proof numbers for every node on the path from the root to the MPN
-
-### TODO future sections
-- Limitation: memory usage
-- Optimizations
-  - stopping propogation early
-  - don't store positions in nodes
-
 
 [checkers]: https://science.sciencemag.org/content/317/5844/1518
 [hex99]: http://webdocs.cs.ualberta.ca/~hayward/papers/pawlhayw.pdf
