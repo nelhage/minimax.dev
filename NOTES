@@ -1,0 +1,9 @@
+- spdfpn
+ - two-level
+ - virtual PNs
+ - concurrency on the table
+- pn-dfpn
+ - better table concurrency
+- implementation
+ - bitboards
+- endgame analysis
