@@ -37,13 +37,19 @@ node(φ,δ)
     B(1,2)   C(1,3)
 ```
 
-In vanilla PN search, we would descend to `B` (it has the minimal δ). This descent would expand some child, update some number of proof numbers on the path from B to the MPN, and then eventually ascend up through the tree to `A` before ultimately returning to the root.
+In vanilla PN search, we would descend to `B` (it has the minimal δ). We would expand some child, update some number of proof numbers on the path from B to the MPN, and then eventually ascend up through the tree to `A` before ultimately returning to the root.
 
-In this case, we would have no guarantee that this process will update `A`'s or even `B`'s proof numbers; it might update some children but not propagate up to `A` or `B`. If we are not storing the entire subtree, but only tracking children on the stack during each recursive call, we will have no way to store the updated proof numbers, and the descent will be ineffectual.
+In general, this expansion might not update `A`'s or even `B`'s proof numbers; it might update some children but not propagate up to `A` or `B`. (We talked about this possibility [last time][staying-deep]).
 
-What we want to do is to instead descend to `B`, and recursively perform a search rooted at `B` _until the result has implications for A_. If, for instance, we search at B and return a new `(φ, δ)` pair of `(2, 4)`, then we want to return to `A`, since `C` is now the most-proving child and we should switch to examining it instead.
+If we are not storing the entire subtree, but only tracking children on the stack during each recursive call, we will have no way to store the updated proof numbers produced by this descent, and no way to make progress.
 
-So what does it mean to search `B` "until the result matters"? Recall from [last time][phidelta] the definitions of φ and δ:
+From the perspective of a search rooted at `A`, what we instead want to do is to descend to `B`, and recursively perform a search rooted at `B` _until the result has implications for A_. If, for instance, B's proof numbers change to `(2, 4)`, then we want to return to `A`, since `C` is now the most-proving child and we should switch to examining it instead.
+
+This gets us close to the DFPN algorithm. The core routine of a DFPN search is a routine `MID(position, limit) -> pns`[^mid], which takes in a game position and a pair of _threshold_ values, `(φₜ, δₜ)`. `MID` will search rooted at `position` until the proof numbers at that position equal or exceed either limit value[^solved] (i.e. `φₜ ≥ ϕ || δ ≥ δₜ`). At this point, `MID` will return the updated proof numbers for that position.
+
+## Selecting thresholds
+
+So how does `MID` choose thresholds to pass to its recursive children? To determine this, we need to examine what it means to search to search `B` "until the result matters at `A`." Recall from [last time][phidelta] the definitions of φ and δ:
 
 {{<katex>}}
 \begin{aligned}
@@ -52,16 +58,28 @@ So what does it mean to search `B` "until the result matters"? Recall from [last
 \end{aligned}
 {{</katex>}}
 
-As well as the fact that the most-proving child is the(a) child with minimal δ amongst its siblings.
+And recall that the most-proving child is the(a, if there are several) child with minimal δ amongst its siblings.
 
 The result of a subtree search can matter in three ways:
 1. If `B`'s δ value rises such that `B` is no longer the most-proving child of `A`, we need to return to `A` and select a new child.
-2. If `B`'s φ value rises, it will increase `A`'s δ value. If that results in `A` itself no longer being the most-proving child of _its_ parent, we need to ascend from _A_ itself.
+2. If `B`'s φ value rises, it will increase `A`'s δ value (that being the sum of its childrens' φs). If that results in `A` itself no longer being the most-proving child of _its_ parent, we need to ascend to (and, indeed, above) `A` itself.
 3. If `B`s δ rises but it remains the most-proving child, that will increase `A`'s φ value. If that in turn increase `A`'s φ value such that it triggers the previous criteria for `A` itself, we need to return.
 
-We are now ready to define DFPN. The core routine of a DFPN search is a routine `MID(position, limit) -> pns`[^mid], which takes in a game position and a pair of _threshold_ values, `(φₜ, δₜ)`, at which `MID` should return if its updated proof numbers meet or exceed either limit[^solved]. `MID` recursively searches the subtree rooted at `position` until it produces a `(φ, δ)` pair for that node with `φₜ ≥ ϕ || δ ≥ δₜ`, at which point it will return those values.
+Combining these criteria, we can arrive at the `(ϕₜ, δₜ)` thresholds `MID` should pass to a recursive call when examining a child.
 
-In Pythonic pseudo-code, `MID` looks something like:
+Let `(ϕ, δ)` be the proof numbers so far for the current node. Let `(ϕₜ, δₜ)` be the bounds to the current call. Let `(ϕ₁, δ₁)` be the proof numbers for the most-proving child, and `δ₂` the `δ` value for the child with the second-smallest δ (noting that we may have `δ₁ = δ₂` in the case of ties).
+
+Examining the previous conditions:
+
+- Condition (1) implies the child call should return if `δ(child)` is strictly greater than `δ₂`, which is to say weakly greater than `δ₂+1`.
+- Condition (2) implies the child call should return if `ϕ(child)` is large enough that `δ ≥ δₜ`. This in turn implies `ϕ(child) + (sum of our other children) ≥ δₜ`. We can compute the sum of our other children as `δ - ϕ₁`, and move that across the `≥` to arrive at `ϕₜ(child) = δₜ - (δ - ϕ₁)`.
+- Condition (3) implies the child call should return if `δ(child) > ϕₜ`.
+
+Conditions (1) and (3) both constrain `δ(child)`, so we have to pick the most-constraining, which is the minimum of the two: `δₜ(child) = min(δ₂+1, ϕₜ)`.
+
+# Pseudo-code
+
+We're now ready to sketch out `MID` in its entirety. Working in Pythonic pseudo-code, we arrive at something like this:
 
 
 ```python
@@ -99,41 +117,48 @@ def MID(position, limit):
     child_pns[i] = MID(children[i], child_limits)
 ```
 
-The key to the routine is the block labeled "Compute thresholds for the child call". `MID` selects a most-proving child and recurses on it, but in order to do so, it must compute a new set of thresholds for that call. Where do those values come from? Let's consider the conditions outlined above:
-
-- Condition (1) implies the child call should return if `child_delta` is strictly greater than `delta_2` (the second-smallest delta value among our children).
-- Condition (2) implies the child call should return if `child_phi` is large enough that `delta >= delta_t`. This in turn implies `child_phi + (sum of other children) >= limit.phi`. We can compute the sum of the other children as `delta - phi_c` and move it across the `>=` to arrive at `child_limit.phi = limit.phi - (delta - phi_c)`.
-- Condition (3) implies the child call should return if `child_delta > limit.phi`.
-
-Conditions (1) and (3) both constrain `child_delta`, so we have to pick the most-constraining, which is the minimum of the two.
-
 To kick off the DFPN search, we simply start with `MID(root, (∞, ∞))`.
 
 ## Transposition tables
 
-Because of MID's recursive iterative-deepening structure, it (as written above) repeatedly expands the same nodes many, many times as it improves the computed proof numbers. I haven't done the analysis but I suspect the above algorithm of being exponentially slower than proof-number search in number of nodes visited, rendering it essentially unusable as-is.
+Because of MID's recursive iterative-deepening structure, it will repeatedly expands the same nodes many, many times as it improves the computed proof numbers. I haven't fully done the analysis but I suspect the above algorithm of being exponentially slower than proof-number search in number of nodes visited, rendering it essentially unusable.
 
-DFPN is thus always used in conjunction with a transposition table to store computed proof numbers so far.
+Thus, DFPN is always used in conjunction with a transposition table, which stores the proof numbers computed so far for each node in the tree, allowing repeated calls to `MID` to re-use past work.
 
-A transposition table is just a fixed-size lossy hash table, indexed by board position. Typical implementations probe some constant number of table buckets on lookup, and on write, choose one of those buckets to replace with the new entry.
+I will talk about transposition tables -- and my implementation -- more elsewhere, but in short, a transposition table is a fixed-size lossy hash table. It supports the operations `store(position, data)` and `get(position)`, with the property that `get(position)` following a `store(position, …)` will **usually** return the stored data, but it may not, because the table will delete entries and/or ignore `store`s in order to maintain a fixed size. I will talk elsewhere about the details of transposition table implementation and some of the choices in which entries to keep or discard.
 
-By storing entries (and their proof numbers) in a transposition table, we can re-use most of the work from previous calls to `MID`, restoring the algorithm to the realm of the practical. However, because DFPN relies on the table only as a cache, and not for correctness, DFPN can (unlike PN search) continue to make progress if the search tree exceeds available memory, especially when augmented with some additional tricks and heuristics.
+By storing proof numbers in a transposition table, we can re-use most of the work from previous calls to `MID`, restoring the algorithm to the practical. However, because DFPN, as constructed here, relies on the table only as a cache, and not for correctness, DFPN can (unlike PN search) continue to make progress if the search tree exceeds available memory, especially when augmented with some additional tricks and heuristics.
+
+The changes to the algorithm above to use a table are small; in essence, we replace `initialize_pns(pos)` with `table.get(pos) or initialize_pns(pos)`, and we add a `table.save(position, (phi, delta))` call just after the computation of `phi` and `delta` in the inner loop.
 
 
 ## A note on this presentation
 
 I learned about DFPN -- as with much of the material here -- primarily from [Kishimoto et al][first-20-years]'s excellent 2012 survey of Proof Number search and its variants.
 
-However, I have deviated substantially here from their presentation of the algorithm. I have two main critiques about their presentation -- and nearly every other presentation I could find -- which I have attempted to remedy here.
+However, I have deviated substantially here from their presentation of the algorithm, and I want to explore some of the distinctions here.
 
-First, it took me a long time to understand how one arrives at DFPN and why it transforms PN search into a depth-first algorithm. The cutoff computation detailed above is presented largely in terms of an additional optmization on top of PN search, which enables the search to stay deeper for longer, and the connection from that observation to depth-first search and iterative deepening is not made explicit. I have tried to draw out that connection more explicitly here and motivate the development of DFPN further.
+Kishimito et al (and every other presentation I could find of DFPN) present the switch to depth-first iterative deepening concurrently with the addition of a transposition table. While this presentation is logical in the sense that you would never use DFPN without a transposition table, I found it confusing, since it was hard to tease apart why the core algorithm works, since the deepening criteria is conflated with the hash table. I find the two-step presentation above very helpful for understanding _why_ DFPN works.
 
-Second, the presentation in Kishimoto et al ties together the transition to multiple-iterative-deepening with the addition of a transposition table, and also relies on the table's presence for correctness of the algorithm; In their presentation, if the transposition table discards an unlucky series of writes, `MID` will enter an infinite loop and fail to make progress. Depending on the details, this may or may not be a concern in practice, but I found it very confusing when attempting to understand the workings of the algorithm; if the whole point of DFPN is to continue to work when the search tree exceeds memory, why are we relying on the transposition table for correctness instead of merely as a cache?
+Secondly, the table in Kishimito's presentation is "load-bearing"; `MID` relies on the table to store and return proof numbers to make progress. In essence, the he replaces the lines
+```python
+    phi = min(pns.delta for pn in child_pns)
+    delta = sum(pns.phi for pn in child_pns)
+```
+with
+```python
+    phi = min(table.get(pos).delta for pos in children)
+    delta = sum(table.get(pos).phi for pos in children)
+```
 
-After thinking through the algorithm, reading at least one existant implementation, and implementing my own, I realized that the above implementation strategy and presentation avoids this problem, and I hope it may also avoid confusion for readers.
+This translation is correct as long as the table never discards writes, but the whole point of a transposition table is that it is a fixed finite size and *does* sometimes discard writes. Kishimoto's version may cease to make progress if the search tree exceeds memory size, while my presentation above should only suffer a slowdown and continue to make progress.
+
+That said, the slowdown can be exponentially bad in practice, which isn't much better than stopping entirely, so I suspect this distinction is somewhat academic the algorithm as presented above. However, I have actually run into a concrete version of this problem during the development of parallel DFPN algorithms, and so I consider it an important point to address.
+
 
 [idastar]: https://en.wikipedia.org/wiki/Iterative_deepening_A*
 [phidelta]: ../variants/#%cf%86-%ce%b4-search
+[staying-deep]: ../variants/#staying-deep-in-the-tree
 [first-20-years]: https://webdocs.cs.ualberta.ca/~mmueller/ps/ICGA2012PNS.pdf
 [^mid]: "MID" stands for "Multiple iterative deepening", indicating that we're doing a form of iterative deepening, but we're doing it at _each level_ of the search tree.
 [^solved]: (Recall that solved nodes have either `φ=∞` or `δ=∞`, so a solved node will always exceed any threshold provided).
