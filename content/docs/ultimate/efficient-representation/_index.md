@@ -1,8 +1,9 @@
 ---
-title: Efficient Representation
+weight: 2
+title: Efficient representation
 ---
 
-# Efficient Representation of Ultimate Tic Tac Toe
+# Efficient representation of Ultimate Tic Tac Toe
 
 Any efficient search engine over a game tree requires an efficient implementation of the game at the core. On this page I'll talk about my Ultimate Tic Tac Toe implementation and the choices I've made.
 
