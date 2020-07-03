@@ -8,6 +8,8 @@ weight: 4
 
 My Ultimate Tic Tac Toe solver uses a parallel variant of [Proof Number search][pns], based largely on [Pawlewicz's SPDFPN][spdfpn] algorithm, which was the state-of-the-art solver for [Hex][hex] as of its publication in 2012.
 
+I have named my variant on SPDFPN "PN-DFPN", since it uses a two-level search, with a traditionall proof-number tree at the root, and concurrent DFPN searches at the leaves of the first-layer tree.
+
 I will describe my solver -- and the various ideas that feed into it -- in this section, attempting to make reference to SPDFPN when appropriate but without fully explaining that prior work.
 
 # Managing parallelism
