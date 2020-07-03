@@ -77,7 +77,7 @@ Examining the previous conditions:
 
 Conditions (1) and (3) both constrain `δ(child)`, so we have to pick the most-constraining, which is the minimum of the two: `δₜ(child) = min(δ₂+1, ϕₜ)`.
 
-# Pseudo-code
+## Pseudo-code
 
 We're now ready to sketch out `MID` in its entirety. Working in Pythonic pseudo-code, we arrive at something like this:
 
@@ -132,7 +132,7 @@ By storing proof numbers in a transposition table, we can re-use most of the wor
 The changes to the algorithm above to use a table are small; in essence, we replace `initialize_pns(pos)` with `table.get(pos) or initialize_pns(pos)`, and we add a `table.save(position, (phi, delta))` call just after the computation of `phi` and `delta` in the inner loop.
 
 
-## A note on this presentation
+# A note on this presentation
 
 I learned about DFPN -- as with much of the material here -- primarily from [Kishimoto et al][first-20-years]'s excellent 2012 survey of Proof Number search and its variants.
 
