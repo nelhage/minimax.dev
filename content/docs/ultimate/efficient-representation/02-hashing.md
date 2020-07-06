@@ -1,6 +1,6 @@
 ---
 slug: hashing
-title: Zobrist Hashing
+title: Zobrist hashing
 ---
 
 # Zobrist hashing
