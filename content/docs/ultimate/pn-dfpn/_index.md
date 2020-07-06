@@ -58,6 +58,11 @@ In my PN-DFPN search, I use a classic reified proof number search for the first-
 
 When the root thread receives a completed job via a queue, it updates its own tree with the new proof numebrs, and resets the virtual proof numbers to match the real proof numbers. In addition, if the total work on the node exceeds the "split threshold" of work, it expands the node in its first-layer tree, adding the children returned by the worker thread, so that future searches will search those children in parallel.
 
+You can find the full details [in my source code][source], which implements everything described here.
+
+[source]: https://github.com/nelhage/ultimattt/blob/master/src/lib/prove/pn_dfpn.rs
+
+
 ## Compared to SPDFPN
 
 My PN-DFPN has two primary differences compared to SPDFPN:

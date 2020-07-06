@@ -35,6 +35,10 @@ I use the low 2 bits to implement a mutex on top of Rust's [`parking_lot_core`][
 
 The high 30 bits are used as a [seqlock][seqlock]. Essentially, writers increment the sequence counter before beginning and after concluding a write; readers, in turn, read the counter before and after reading an element from the table; if they find that the counter has not changed, they can be confident they did not race with any writer and read a consistent view of the element. This allows for very efficient reads, especially in the uncontended case.
 
+## Source
+
+You can read the [source code][source] for my transposition table on github.
+
 
 [seqlock]: https://en.wikipedia.org/wiki/Seqlock
 [parking_lot_core]: https://docs.rs/parking_lot_core/0.8.0/parking_lot_core/index.html
@@ -44,3 +48,4 @@ The high 30 bits are used as a [seqlock][seqlock]. Essentially, writers incremen
 [work]: /docs/ultimate/pn-dfpn/#work-budgets
 [swisstable]: https://abseil.io/docs/cpp/guides/container#hash-tables
 [pn-dfpn]: /docs/ultimate/pn-dfpn/
+[source]: https://github.com/nelhage/ultimattt/blob/master/src/lib/table.rs

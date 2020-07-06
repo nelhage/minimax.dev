@@ -30,7 +30,10 @@ Because `XOR` is commutative and associative, and because it is its own inverse,
 
 As an additional optimization, when a player wins or draws a global board, we iterate over all the played squares on that board, and we XOR them back into the hash, effectively "removing" them from the hash. This has the property that once a local board is closed, we treat it identically no matter how it was won or which moves were played into it.
 
+You can find [the crux of my zobrist hash function][source] in the source code here.
+
 
 [dfpn]: /docs/ultimate/pn-search/dfpn/
 [tt]: https://www.chessprogramming.org/Transposition_Table
 [zobrist]: https://www.chessprogramming.org/Zobrist_Hashing
+[source]: https://github.com/nelhage/ultimattt/blob/ede81bb90bb16487f598ffb733145985ceb81ac2/src/lib/game.rs#L349-L376

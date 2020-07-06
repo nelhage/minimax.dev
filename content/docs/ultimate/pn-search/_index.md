@@ -119,6 +119,8 @@ I will not present full pseudo-code (see [Kishimoto et al](first-20-years) for o
   - We evaluate those children, assigning proof numbers based on either game result, or an initialization heuristic
   - We backpropagate, updating proof numbers for every node on the path from the root to the MPN
 
+You can also [read the source][source] of my PN search algorithm for Ultimate Tic Tac Toe, which I implemented on the way to [my current solver][pn-dfpn].
+
 [checkers]: https://science.sciencemag.org/content/317/5844/1518
 [hex99]: http://webdocs.cs.ualberta.ca/~hayward/papers/pawlhayw.pdf
 [first-20-years]: https://webdocs.cs.ualberta.ca/~mmueller/ps/ICGA2012PNS.pdf
@@ -126,3 +128,5 @@ I will not present full pseudo-code (see [Kishimoto et al](first-20-years) for o
 [minimax]: https://en.wikipedia.org/wiki/Minimax#Minimax_algorithm_with_alternate_moves
 [best-first]: https://en.wikipedia.org/wiki/Best-first_search
 [demorgan]: https://en.wikipedia.org/wiki/De_Morgan%27s_laws
+[pn-dfpn]: ../pn-dfpn/
+[source]: https://github.com/nelhage/ultimattt/blob/master/src/lib/prove/pn.rs

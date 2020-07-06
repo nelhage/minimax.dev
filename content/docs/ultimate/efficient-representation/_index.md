@@ -37,6 +37,10 @@ Bitboards have at least two significant advantages:
 
 # Our representation
 
+(You can find [my source code here][source] as you read.)
+
+[source]: https://github.com/nelhage/ultimattt/blob/master/src/lib/game.rs
+
 At core, an Ultimate Tic Tac Toe engine needs to track the state of each of the 81 underlying squares of the [local boards][local], and each of the 9 squares of the global boards. The local squares each have three possible states: empty, `X`, and `O`, and the global squares have the additional possibility of "Drawn".
 
 I chose to represent these using a set of bitmasks. The three or four possibilities can be represented using two bits, one representing `X` and one representing `O`; for the global boards, setting both bits corresponds to a draw.

@@ -131,6 +131,10 @@ By storing proof numbers in a transposition table, we can re-use most of the wor
 
 The changes to the algorithm above to use a table are small; in essence, we replace `initialize_pns(pos)` with `table.get(pos) or initialize_pns(pos)`, and we add a `table.save(position, (phi, delta))` call just after the computation of `phi` and `delta` in the inner loop.
 
+You can [read the source][source] of my DFPN search algorithm to put all the pieces together; It is exposed both as a standalone algorithm and used as a subroutine in [my current solver][pn-dfpn].
+
+[pn-dfpn]: ../../pn-dfpn/
+[source]: https://github.com/nelhage/ultimattt/blob/master/src/lib/prove/dfpn.rs
 
 # A note on this presentation
 
