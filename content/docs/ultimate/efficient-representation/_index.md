@@ -55,12 +55,12 @@ struct GlobalStates {
 And packed each row of the global board into a pair of `u23` values, one each for `x` and `o`:
 
 ```rust
-struct GlobalRow {
+struct Row {
   // These are each a packed [u9; 3]
   x: u32,
   o: u32,
 }
-struct LocalBoards([GlobalRow; 3]);
+struct LocalBoards([Row; 3]);
 ```
 
 This comes to `7*4 = 28` bytes; the rest of the board space is consumed by metadata, including an 8-byte hash value I'll talk about in a later section.
