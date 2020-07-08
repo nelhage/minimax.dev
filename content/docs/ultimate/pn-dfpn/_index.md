@@ -50,7 +50,7 @@ In the first layer, near the root of the search tree, we search in serial using 
 
 How does the first-level search decide whether to descend into a node's children itself, or to stop at a node and dispatch that node for parallel searching? Here we use the "work" notion defined above: we track the total amount of work that has been performed on a given node, and expand a node into its children (in the top-level tree) once a node has exceeded a threshold amount of work.
 
-This heuristic works because "work performed so far" serves as an acceptably-good estime for "work that will be performed in the future," and balances the desire to split nodes early -- so we have more available parallelism -- with the desire to defer splitting nodes until we are sure there is enough work in that subtree to be worth multiple cores.
+This heuristic works because "work performed so far" serves as an acceptably-good estimate for "work that will be performed in the future," and balances the desire to split nodes early -- so we have more available parallelism -- with the desire to defer splitting nodes until we are sure there is enough work in that subtree to be worth multiple cores.
 
 # Putting it together
 
