@@ -84,6 +84,6 @@ Pawlewicz's SPDFPN uses a shared transposition table with a single global reader
 [pns]: /docs/ultimate/pn-search/
 [spdfpn]: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.353.270
 [hex]: https://en.wikipedia.org/wiki/Hex_(board_game)
-[mid]: docs/ultimate/pn-search/dfpn/#pseudo-code
+[mid]: /docs/ultimate/pn-search/dfpn/#pseudo-code
 [dfpn-progress]: /docs/ultimate/pn-search/dfpn/#a-note-on-this-presentation
 [tt]: tt/

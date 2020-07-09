@@ -110,7 +110,7 @@ By recursively following this rule until we arrive at a leaf (unexpanded) node, 
 
 ### A sketch of PN search
 
-I will not present full pseudo-code (see [Kishimoto et al](first-20-years) for one such presentation), but I will sketch the full PNS algorithm:
+I will not present full pseudo-code (see [Kishimoto et al][first-20-years] for one such presentation), but I will sketch the full PNS algorithm:
 
 - Initialization: We create the root node of the tree
 - Search: We repeat the following loop until either the root is solved (`pn=0` or `dpn=0`), or until we exceed a specifide budget for search time or memory:

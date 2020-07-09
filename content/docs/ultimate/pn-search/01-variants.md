@@ -8,7 +8,7 @@ title: "Variants and refinements"
 
 Having presented basic Proof Number search, I will present some observations, optimizations, and refinements, focusing primarily on ones that I have used in my Ultimate Tic Tac Toe solver.
 
-The work in this section is a mix of summaries from [Kishimoto et al](first-20-years) and optimizations I happened upon during my project. I will attempt to flag which is which.
+The work in this section is a mix of summaries from [Kishimoto et al][first-20-years] and optimizations I happened upon during my project. I will attempt to flag which is which.
 
 ## φ-δ search
 
@@ -137,7 +137,7 @@ struct Node {          // size / running total
 
 
 [first-20-years]: https://webdocs.cs.ualberta.ca/~mmueller/ps/ICGA2012PNS.pdf
-[negamax]: (https://en.wikipedia.org/wiki/Negamax
+[negamax]: https://en.wikipedia.org/wiki/Negamax
 [draw]: /docs/ultimate/pn-search/#win-or-lose-there-is-no-draw
 [searching-for-solutions]: https://project.dke.maastrichtuniversity.nl/games/files/phd/SearchingForSolutions.pdf
 [sorbet-ref]: https://blog.nelhage.com/post/why-sorbet-is-fast/#globalstate-and-ref
