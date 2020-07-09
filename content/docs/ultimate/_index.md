@@ -15,7 +15,7 @@ As of this writing, I have a high-performance Ultimate Tic Tac Toe solver writte
 - A [high performance implementation][efficient] of an Ultimate Tic Tac Toe engine.
 - An [efficient parallel proof tree search algorithm][pn-dfpn], consisting of a combined two-level [Proof Number search][pns] and [Depth-First Proof Number Search][dfpn] search.
 - A [high-performance parallel transposition table][tt].
-- An endgame analysis engine capable of solving some positions and moves without tree search, in order to prune the search tree.
+- An [positional analysis engine][positional] capable of solving some positions and moves without tree search, in order to prune the search tree.
 
 The solver is presently capable of solving Ultimate Tic Tac Toe positions after about 20 ply (10 moves by each player) in a few hours of search on my Ryzen 3900X desktop. I (very roughly) estimate this implies a total computational cost of a few hundred million CPU-hours to solve the whole game without further optimization. CPU time on AWS costs something like 2 cents an hour, suggesting a cost in the $2M - $10M range. I thus believe the solution is solidly within the realm of "technically feasible", but certainly well outside my budget. Further optimizations will be required to knock off a few more orders of magnitude in order to complete the project.
 
@@ -34,3 +34,4 @@ The solver is presently capable of solving Ultimate Tic Tac Toe positions after 
 [dfpn]: pn-search/dfpn/
 [pn-dfpn]: pn-dfpn/
 [tt]: pn-dfpn/tt/
+[positional]: /docs/ultimate/pruning/
