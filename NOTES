@@ -1,4 +1,4 @@
-- pn-dfpn
-- transposition table
-- endgame solver
+- implementing a tree in Rust
+- USDT probes and tracing
+- Using `perf` to understand parallel performance
 - next steps
