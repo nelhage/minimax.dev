@@ -56,7 +56,7 @@ struct GlobalStates {
 }
 ```
 
-And packed each row of the global board into a pair of `u23` values, one each for `x` and `o`:
+And packed each row of the global board into a pair of `u32` values, one each for `x` and `o`:
 
 ```rust
 struct Row {
@@ -73,7 +73,7 @@ This comes to `7*4 = 28` bytes; the rest of the board space is consumed by metad
 
 Storing positions as bitmasks admits some useful efficient operations. For a start, `x | o` gives us all occupied squares, and negating that bitmask gives us all empty squares, which is useful for move generation and computing various heuristics.
 
-In additiona, because a single board can be represented as 18 bits, it's feasible to build lookup tables keyed by an entire board, letting us embed expensive computations into a single lookup; a single lookup table is 256kb, which is not trivial but also is well feasible.
+In addition, because a single board can be represented as 18 bits, it's feasible to build lookup tables keyed by an entire board, letting us embed expensive computations into a single lookup; a single lookup table is 256kb, which is not trivial but also is well feasible.
 
 We can also use efficient bit tricks to check if a board has been won. We can precompute a set of bitmasks corresponding to each of the 8 possible 3-in-a-row positions:
 
@@ -118,3 +118,4 @@ We will use similar patterns later on when analyzing endgames.
 [taktician-bits]: https://github.com/nelhage/taktician/blob/master/doc/bitboards.md
 [local]: ../the-game
 [xmm]: https://en.wikibooks.org/wiki/X86_Assembly/SSE
+[packed_simd]: https://docs.rs/crate/packed_simd
