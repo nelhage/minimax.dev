@@ -40,7 +40,7 @@ O       | O  O  O | _  _  O
       O |         | X  _ (_)
 ```
 
-(To enhance clarity, I've deleted all moves except the winning line from local boards that are won; `O` has won two local baords, and `X` one.)
+(To enhance clarity, I've deleted all moves except the winning line from local boards that are won; `O` has won two local boards, and `X` one.)
 
 If `O` is ever allowed to play in the bottom-right board, she will play in the marked square and win the game. `X`, thus, in order to keep the game going, is constrained to only play moves that do not allow `O` to play there.
 
