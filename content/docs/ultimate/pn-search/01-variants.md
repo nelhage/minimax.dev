@@ -12,7 +12,7 @@ The work in this section is a mix of summaries from [Kishimoto et al][first-20-y
 
 ## φ-δ search
 
-An implementation of vanillya PN search ends up containing two sets of (d)pn-calculation and MPN-selection routines, one for AND nodes and one for OR nodes, which are essentially identical except for swapping the roles of `pn` and `dpn`. In the style of [negamax][negamax], we can restore equivalence between the cases by replacing `pn` and `dpn` with φ and δ, which store proof numbers from the perspective of the player to play in a given node, instead of from the perspective of the top-level node. Specifically, we define
+An implementation of vanilla PN search ends up containing two sets of (d)pn-calculation and MPN-selection routines, one for AND nodes and one for OR nodes, which are essentially identical except for swapping the roles of `pn` and `dpn`. In the style of [negamax][negamax], we can restore equivalence between the cases by replacing `pn` and `dpn` with φ and δ, which store proof numbers from the perspective of the player to play in a given node, instead of from the perspective of the top-level node. Specifically, we define
 
 {{<katex display>}}
 \begin{aligned}
