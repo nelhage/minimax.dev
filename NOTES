@@ -1,4 +1,5 @@
 - implementing a tree in Rust
 - USDT probes and tracing
 - Using `perf` to understand parallel performance
+- counters in the table
 - next steps
