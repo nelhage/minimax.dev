@@ -10,7 +10,7 @@ RUN curl -Lo /hugo.tgz \
 
 COPY . /build
 WORKDIR /build
-RUN /usr/bin/hugo --minify --cleanDestinationDir
+RUN /usr/bin/hugo --cleanDestinationDir
 
 FROM nginx
 ADD nginx.conf /etc/nginx/nginx.conf
