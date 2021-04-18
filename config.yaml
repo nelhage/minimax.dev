@@ -2,7 +2,6 @@ baseURL: https://minimax.dev/
 languageCode: en-us
 title: Ramblings on game trees
 theme: book
-googleAnalytics: UA-10238083-4
 
 # Needed for mermaid/katex shortcodes
 markup:
