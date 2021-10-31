@@ -114,7 +114,7 @@ def MID(position, limit):
       phi = limit.delta - (delta - phi_c),
       delta = min(limit.phi, delta_2 + 1)
     )
-    child_pns[i] = MID(children[i], child_limits)
+    child_pns[min_idx] = MID(children[min_idx], child_limits)
 ```
 
 To kick off the DFPN search, we simply start with `MID(root, (∞, ∞))`.

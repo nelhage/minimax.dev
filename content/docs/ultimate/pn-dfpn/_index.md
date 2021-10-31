@@ -71,7 +71,7 @@ My PN-DFPN has two primary differences compared to SPDFPN:
 
 Pawlewicz uses DFPN for both layers of his search tree, sharing the transposition table, and storing virtual proof numbers in a lookaside overlay data structure.
 
-However, both SPDFPN and PN-DFPN must repeatedly return to the root of the top-level tree, in order to select new MPNs as threads complete and update children scattered throughout the tree. As [discussed in my DFPN presentation][dfpn-progres], DFPN relies on staying deep in the tree in order to guarantee progress; when I implemented the SPDFPN approach, I found my solver very frequently stopped making progress because the table was dropping key writes, and so the algorithm would continually return to the same MPN and be unable to store the result.
+However, both SPDFPN and PN-DFPN must repeatedly return to the root of the top-level tree, in order to select new MPNs as threads complete and update children scattered throughout the tree. As [discussed in my DFPN presentation][dfpn-progress], DFPN relies on staying deep in the tree in order to guarantee progress; when I implemented the SPDFPN approach, I found my solver very frequently stopped making progress because the table was dropping key writes, and so the algorithm would continually return to the same MPN and be unable to store the result.
 
 I do not have a detailed analysis of why SPDFPN did not work in my domain but did for Hex, but I suspect that the deep-and-narrow trees of Ultimate Tic Tac Toe -- and thus, the number of branching decisions required to reach an MPN -- is involved.
 
