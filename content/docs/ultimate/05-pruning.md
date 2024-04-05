@@ -68,7 +68,7 @@ Furthermore, while I haven't had the need to implement this optimization yet, we
 
 I have not yet attempted to perform the exact combinatorics to calculate the size of the Ultimate Tic Tac Toe endgame, but I currently do not see a clear way to build endgame databases. As the game progresses, there are typically _more_ marks on the board, increasing rather than ever decreasing the number of possible boards.
 
-Winning a local board does collapse the search space, since once a local board is won, it can be represented as a single symbol and the individual moves on that board no longer matter. However, in my searches so far, most games do not complete that many local boards before being one by one player or another, suggesting that this observation doesn't help us that much.
+Winning a local board does collapse the search space, since once a local board is won, it can be represented as a single symbol and the individual moves on that board no longer matter. However, in my searches so far, most games do not result in all that many local boards before being won by either player, which suggests this observation may not help us that much.
 
 [game-rules]: /docs/ultimate/the-game/
 [cgt]: https://en.wikipedia.org/wiki/Combinatorial_game_theory
