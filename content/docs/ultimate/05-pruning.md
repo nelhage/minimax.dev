@@ -54,7 +54,7 @@ Those facts combined means that `X` must never "send" O to either the bottom-rig
 # # #
 ```
 
-If `X` ever plays into one of those squares -- in any local baord -- he loses the game[^winning]. We can thus, whenever it is `X`'s turn to play, immediately exclude those moves from the search tree!
+If `X` ever plays into one of those squares -- in any local board -- he loses the game[^winning]. We can thus, whenever it is `X`'s turn to play, immediately exclude those moves from the search tree!
 
 Furthermore, we can do one level of implicit lookahead whenever it is `X`'s move to play: If any local board has _only_ those squares open, it is losing for `O` to be forced to play there. Thus, if any such local boards exist, the corresponding positions become _winning_ for `X`.
 
